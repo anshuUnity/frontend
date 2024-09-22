@@ -1,37 +1,32 @@
-import { Tabs } from 'expo-router';
+// app/(tabs)/_layout.tsx
 import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomTabNavigator from '@/components/navigation/BottomTabNavigator';
+import PodcastPlayer from './PodcastPlayer';
+import { AudioProvider } from '../store/AudioContext';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const Stack = createNativeStackNavigator();
 
+export default function Layout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <Provider store={store}>
+      <AudioProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="MainTabs"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PodcastPlayer"
+            component={PodcastPlayer}
+            options={{ title: 'Podcast Player' }}
+          />
+        </Stack.Navigator>
+      </AudioProvider>
+    </Provider>
   );
 }

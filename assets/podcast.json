@@ -1,0 +1,52 @@
+[
+    {
+      "id": 1,
+      "title": "Building the Stormbreaker",
+      "author": "Thor",
+      "duration": "00:28",
+      "image": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 2,
+      "title": "How to build a wall",
+      "author": "Tormund Giantsbane",
+      "duration": "00:59",
+      "image": "https://via.placeholder.com/50"
+    },
+    {
+      "id": 3,
+      "title": "Shaving your beard as a real Hero",
+      "author": "Thanos",
+      "duration": "01:18",
+      "image": "https://via.placeholder.com/50"
+    },
+    {
+      "id": 4,
+      "title": "The effects of radiation exposure",
+      "author": "Bruce Banner",
+      "duration": "00:23",
+      "image": "https://via.placeholder.com/50"
+    },
+    {
+      "id": 5,
+      "title": "Josh Brolin's anatomy",
+      "author": "Thanos",
+      "duration": "00:36",
+      "image": "https://via.placeholder.com/50"
+    },
+    {
+      "id": 6,
+      "title": "Learning how to hunt",
+      "author": "Kratos",
+      "duration": "00:34",
+      "image": "https://via.placeholder.com/50"
+    },
+    {
+      "id": 7,
+      "title": "The mind of a seer",
+      "author": "Ragnar Lothbrok",
+      "duration": "01:16",
+      "image": "https://via.placeholder.com/50"
+    }
+]
+  
