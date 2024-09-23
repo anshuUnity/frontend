@@ -1,33 +1,19 @@
-// app/(tabs)/_layout.tsx
 import React from 'react';
 import { Provider } from 'react-redux';
-
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from '@/components/navigation/BottomTabNavigator';
-
-import PodcastDetail from './PodcastDetail';
 import store from '../store/store';
 import { PlaybackProvider } from '../store/AudioContext';
-
-const Stack = createNativeStackNavigator();
+import MiniPlayer from '@/components/MiniPlayer';
 
 export default function Layout() {
   return (
     <Provider store={store}>
       <PlaybackProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="MainTabs"
-            component={BottomTabNavigator}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="PodcastDetail"
-            component={PodcastDetail}
-            options={{ title: 'Podcast Detail' }}
-          />
-        </Stack.Navigator>
+        <NavigationContainer independent={true}>
+          <BottomTabNavigator />
+          <MiniPlayer />
+        </NavigationContainer>
       </PlaybackProvider>
     </Provider>
   );

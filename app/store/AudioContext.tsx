@@ -1,11 +1,18 @@
 import React, { createContext, useState, useContext } from 'react';
 import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess } from 'expo-av';
 
+type AudioData = {
+  uri: string;
+  title: string;
+  host: string;
+  cover_image: string;
+};
+
 type PlaybackContextType = {
   playbackObj: Audio.Sound | null;
   soundObj: AVPlaybackStatus | null;
-  currentAudio: string | null;
-  playPauseHandler: (audio_file: string) => Promise<void>;
+  currentAudio: AudioData | null;
+  playPauseHandler: (audio: AudioData) => Promise<void>;
 };
 
 const PlaybackContext = createContext<PlaybackContextType | undefined>(undefined);
@@ -13,7 +20,7 @@ const PlaybackContext = createContext<PlaybackContextType | undefined>(undefined
 export const PlaybackProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [playbackObj, setPlaybackObj] = useState<Audio.Sound | null>(null);
   const [soundObj, setSoundObj] = useState<AVPlaybackStatus | null>(null);
-  const [currentAudio, setCurrentAudio] = useState<string | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<AudioData | null>(null);
 
   const handlePlaybackStatusUpdate = (
     status: AVPlaybackStatus,
@@ -25,30 +32,30 @@ export const PlaybackProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  const playPauseHandler = async (audio_file: string) => {
-    if (soundObj === null || currentAudio !== audio_file) {
+  const playPauseHandler = async (audio: AudioData) => {
+    if (soundObj === null || currentAudio?.uri !== audio.uri) {
       if (playbackObj) {
         await playbackObj.unloadAsync();
       }
 
       const newPlaybackObj = new Audio.Sound();
-      const status = await newPlaybackObj.loadAsync({ uri: audio_file }, { shouldPlay: true });
+      const status = await newPlaybackObj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
 
       if (status.isLoaded) {
-        const successStatus = status as AVPlaybackStatusSuccess;
         newPlaybackObj.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) =>
           handlePlaybackStatusUpdate(status, setSoundObj)
         );
 
         setPlaybackObj(newPlaybackObj);
-        setCurrentAudio(audio_file);
-        setSoundObj(successStatus);
+        setCurrentAudio(audio);
+        setSoundObj(status as AVPlaybackStatusSuccess);
       } else {
         console.error('Failed to load the sound', status);
       }
       return;
     }
 
+    // Existing logic for play/pause
     if (soundObj.isLoaded && 'isPlaying' in soundObj && soundObj.isPlaying) {
       const status = await playbackObj?.setStatusAsync({ shouldPlay: false });
 
