@@ -1,19 +1,21 @@
 // app/(tabs)/_layout.tsx
 import React from 'react';
 import { Provider } from 'react-redux';
-import { store } from '../store/store';
+
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from '@/components/navigation/BottomTabNavigator';
-import PodcastPlayer from './PodcastPlayer';
-import { AudioProvider } from '../store/AudioContext';
+
+import PodcastDetail from './PodcastDetail';
+import store from '../store/store';
+import { PlaybackProvider } from '../store/AudioContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function Layout() {
   return (
     <Provider store={store}>
-      <AudioProvider>
+      <PlaybackProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="MainTabs"
@@ -21,12 +23,12 @@ export default function Layout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="PodcastPlayer"
-            component={PodcastPlayer}
-            options={{ title: 'Podcast Player' }}
+            name="PodcastDetail"
+            component={PodcastDetail}
+            options={{ title: 'Podcast Detail' }}
           />
         </Stack.Navigator>
-      </AudioProvider>
+      </PlaybackProvider>
     </Provider>
   );
 }

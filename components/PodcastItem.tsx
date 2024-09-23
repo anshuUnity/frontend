@@ -7,21 +7,25 @@ interface PodcastItemProps {
   id: number;
   title: string;
   host: string;
-  duration: string;
+  description: string;
+  duration: number;
   cover_image: string;
   audio_file: string;
   category: string;
 }
 
-const PodcastItem: React.FC<PodcastItemProps> = ({ title, host, duration, cover_image, audio_file, category }) => {
+const PodcastItem: React.FC<PodcastItemProps> = ({ id, title, host, description, duration, cover_image, audio_file, category }) => {
 
     // Inside your component
     const navigation = useNavigation<PodcastPlayerNavigationProp>();
 
     const handlePodcastPress = () => {
-    navigation.navigate('PodcastPlayer', {
+    navigation.navigate('PodcastDetail', {
+        id,
         title,
         host,
+        description,
+        duration,
         cover_image,
         audio_file,
         category,

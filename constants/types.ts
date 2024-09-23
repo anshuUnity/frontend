@@ -10,7 +10,7 @@ export interface Podcast {
     category: string;
     language: string;
     publish_date: string;
-    duration: string;
+    duration: number;
     audio_file: string;
     is_explicit: boolean;
     tags: Tag[];
@@ -32,9 +32,12 @@ export interface Podcast {
 
 export type RootStackParamList = {
   Discover: undefined;
-  PodcastPlayer: {
+  PodcastDetail: {
+    id: number,
     title: string;
     host: string;
+    description: string,
+    duration: number,
     cover_image: string;
     audio_file: string;
     category: string;
@@ -44,10 +47,10 @@ export type RootStackParamList = {
 // Navigation prop types
 export type PodcastPlayerNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'PodcastPlayer'
+  'PodcastDetail'
 >;
 
 export type PodcastPlayerRouteProp = RouteProp<
   RootStackParamList,
-  'PodcastPlayer'
+  'PodcastDetail'
 >;

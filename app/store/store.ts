@@ -1,12 +1,10 @@
-// app/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import audioReducer from './audioSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     audio: audioReducer,
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export default store;
