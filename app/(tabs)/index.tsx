@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import podcastsData from '@/assets/podcast.json'; // Import the JSON file directly
 import PodcastItem from '@/components/PodcastItem';
 import PodcastShimmerItem from '@/components/PodcastShimmerItem';
@@ -8,22 +8,31 @@ import { Podcast, PodcastApiResponse } from '@/constants/types';
 export default function DiscoverScreen() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
 
   useEffect(() => {
     fetchPodcasts();
   }, []);
 
-  const fetchPodcasts = async () => {
+  const fetchPodcasts = async (url: string = 'https://3afa-2607-fea8-29c0-bd00-fdd5-9ada-295b-e22.ngrok-free.app/podcasts/') => {
     try {
-      // 4d43-2607-fea8-29c0-bd00-6d56-68bd-fbf3-aed1.ngrok-free.app
-      const response = await fetch('https://3afa-2607-fea8-29c0-bd00-fdd5-9ada-295b-e22.ngrok-free.app/podcasts/');
-      
+      const response = await fetch(url);
       const data: PodcastApiResponse = await response.json();
-      setPodcasts(data.results);
+      setPodcasts((prevPodcasts) => [...prevPodcasts, ...data.results]);
+      setNextPageUrl(data.next);
     } catch (error) {
       console.error('Failed to load podcasts:', error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const loadMorePodcasts = () => {
+    if (nextPageUrl && !loadingMore) {
+      setLoadingMore(true);
+      fetchPodcasts(nextPageUrl);
     }
   };
 
@@ -31,11 +40,15 @@ export default function DiscoverScreen() {
 
   const renderShimmerItem = () => <PodcastShimmerItem />;
 
+  const renderFooter = () => {
+    return loadingMore ? <ActivityIndicator size="large" color="#0000ff" /> : null;
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
         <FlatList
-          data={Array(3).fill({})} // Render 3 shimmer items as placeholders
+          data={Array(9).fill({})} // Render 3 shimmer items as placeholders
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderShimmerItem}
         />
@@ -45,6 +58,9 @@ export default function DiscoverScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderPodcastItem}
           contentContainerStyle={styles.listContainer}
+          onEndReached={loadMorePodcasts}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={renderFooter}
         />
       )}
     </View>
