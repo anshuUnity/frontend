@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import PodcastCard from './PostCard';
+import { Podcast } from '@/constants/types';
 
-const SearchResults = ({ query }) => {
+
+interface SearchResultsProps {
+  query: string;
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Podcast[]>([]); // Use the Podcast interface
 
   const fetchSearchResults = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/search/?q=${query}`);
+      const response = await fetch(`https://94c2-2607-fea8-29c0-bd00-6859-8fdb-a05f-defb.ngrok-free.app/search/?q=${query}`);
       const data = await response.json();
       setResults(data.results);
     } catch (error) {
@@ -19,7 +25,7 @@ const SearchResults = ({ query }) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (query) {
       fetchSearchResults();
     }

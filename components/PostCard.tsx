@@ -1,7 +1,12 @@
+import { Podcast } from '@/constants/types';
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const PodcastCard = ({ podcast }) => {
+interface PodcastCardProps {
+  podcast: Podcast;
+}
+
+const PodcastCard: React.FC<PodcastCardProps> = ({ podcast }) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: podcast.cover_image }} style={styles.image} />
