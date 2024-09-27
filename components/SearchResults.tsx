@@ -15,7 +15,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
   const fetchSearchResults = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`https://94c2-2607-fea8-29c0-bd00-6859-8fdb-a05f-defb.ngrok-free.app/search/?q=${query}`);
+      const response = await fetch(`https://b256-2607-fea8-29c0-bd00-2139-e9d5-2206-b314.ngrok-free.app/search/?q=${query}`);
       const data = await response.json();
       setResults(data.results);
     } catch (error) {

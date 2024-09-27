@@ -1,18 +1,38 @@
-import { Podcast } from '@/constants/types';
+import { Podcast, PodcastPlayerNavigationProp } from '@/constants/types';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface PodcastCardProps {
   podcast: Podcast;
 }
 
 const PodcastCard: React.FC<PodcastCardProps> = ({ podcast }) => {
+
+  const navigation = useNavigation<PodcastPlayerNavigationProp>();
+
+  const handlePodcastPress = () => {
+    navigation.navigate('PodcastDetail', {
+        id: podcast.id,
+        title: podcast.title,
+        host: podcast.host,
+        description: podcast.description,
+        duration: podcast.duration,
+        cover_image: podcast.cover_image,
+        audio_file: podcast.audio_file,
+        category: podcast.category
+    });
+    };
+    
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: podcast.cover_image }} style={styles.image} />
-      <Text style={styles.title}>{podcast.title}</Text>
-      <Text style={styles.host}>{podcast.host}</Text>
-    </View>
+    <TouchableOpacity onPress={handlePodcastPress}>
+        <View style={styles.card}>
+          <Image source={{ uri: podcast.cover_image }} style={styles.image} />
+          <Text style={styles.title}>{podcast.title}</Text>
+          <Text style={styles.host}>{podcast.host}</Text>
+        </View>
+    </TouchableOpacity>
   );
 };
 
