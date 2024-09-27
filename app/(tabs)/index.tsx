@@ -15,7 +15,7 @@ export default function DiscoverScreen() {
     fetchPodcasts();
   }, []);
 
-  const fetchPodcasts = async (url: string = 'https://3afa-2607-fea8-29c0-bd00-fdd5-9ada-295b-e22.ngrok-free.app/podcasts/') => {
+  const fetchPodcasts = async (url: string = 'https://5802-2607-fea8-29c0-bd00-5982-1cbf-e92d-572a.ngrok-free.app/podcasts/') => {
     try {
       const response = await fetch(url);
       const data: PodcastApiResponse = await response.json();
