@@ -29,7 +29,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
     if (query) {
       fetchSearchResults();
     }
-  }, [query]);
+  }, []);
 
   if (loading) {
     return (
