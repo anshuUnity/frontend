@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayback } from '../store/AudioContext';
-import { FontAwesome } from '@expo/vector-icons'; // Import for the stars
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function PodcastDetail({ route }: any) {
   const { id, title, host, description, cover_image, category, audio_file } = route.params;
-  const { playbackObj, soundObj, currentAudio, playPauseHandler } = usePlayback(); // Use context
+  const { playbackObj, soundObj, currentAudio, playPauseHandler } = usePlayback();
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [lastPress, setLastPress] = useState<number>(0);
 
   const audioData = { uri: audio_file, title, host, cover_image };
+
+  useEffect(() => {
+    if (soundObj && currentAudio?.uri == audio_file) {
+      if (!soundObj.isLoaded) {
+        setIsPlaying(false);
+        setIsLoading(true); // Set loading to true while sound is loading
+      } else if (soundObj.isLoaded && soundObj.isBuffering) {
+        setIsPlaying(false);
+        setIsLoading(true);
+      } else if (soundObj.isLoaded && !soundObj.isBuffering) {
+        setIsPlaying(soundObj.isPlaying);
+        setIsLoading(false); // Stop loading once playing or paused
+      }
+    }
+  }, [soundObj]);
+
+  const debouncedPlayPauseHandler = useCallback(() => {
+    const now = Date.now();
+    if (now - lastPress < 500) {
+      return; // Prevent action if the last press was less than 500ms ago
+    }
+    setLastPress(now);
+
+    if (!isLoading && !isPlaying) {
+      playPauseHandler(audioData);
+    }
+  }, [lastPress, isLoading, isPlaying, playPauseHandler]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -32,8 +62,12 @@ export default function PodcastDetail({ route }: any) {
       </View>
 
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.playButton} onPress={() => playPauseHandler(audioData)}>
-          <Text style={styles.playButtonText}>PLAY</Text>
+        <TouchableOpacity
+          style={[styles.playButton, isLoading && styles.disabledButton]}
+          onPress={debouncedPlayPauseHandler}
+          disabled={isLoading}
+        >
+          <Text style={styles.playButtonText}>{isLoading ? 'LOADING...' : isPlaying ? 'PAUSE' : 'PLAY'}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.addToPlaylistButton} onPress={() => console.log('Add to Playlist')}>
           <Text style={styles.addToPlaylistText}>ADD TO PLAYLIST</Text>
@@ -113,6 +147,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
+  },
+  disabledButton: {
+    backgroundColor: 'grey',
   },
   playButtonText: {
     color: 'white',
