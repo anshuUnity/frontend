@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, FlatList, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import PodcastCard from './PostCard';
 import { Podcast } from '@/constants/types';
 
+const { width } = Dimensions.get('window');
 
 interface SearchResultsProps {
   query: string;
@@ -10,7 +11,7 @@ interface SearchResultsProps {
 
 const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<Podcast[]>([]); // Use the Podcast interface
+  const [results, setResults] = useState<Podcast[]>([]); 
 
   const fetchSearchResults = async () => {
     setLoading(true);
@@ -43,7 +44,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
     <FlatList
       data={results}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => <PodcastCard podcast={item} />}
+      renderItem={({ item }) => (
+        <View style={styles.itemContainer}>
+          <PodcastCard podcast={item} />
+        </View>
+      )}
       numColumns={2}
       contentContainerStyle={styles.gridContainer}
     />
@@ -58,6 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  itemContainer: {
+    width: (width / 2) - 15, // Half of the screen width minus some padding for spacing
+    marginBottom: 15,        // Space between items
+    marginRight: 10,         // Add right margin to avoid spacing issues in two columns
   },
 });
 

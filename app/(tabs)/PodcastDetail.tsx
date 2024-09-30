@@ -30,14 +30,14 @@ export default function PodcastDetail({ route }: any) {
 
   const debouncedPlayPauseHandler = useCallback(() => {
     const now = Date.now();
-    if (now - lastPress < 500) {
+    if (now - lastPress < 1000) {
       return; // Prevent action if the last press was less than 500ms ago
     }
     setLastPress(now);
 
-    if (!isLoading && !isPlaying) {
+    // if (!isLoading && !isPlaying) {
       playPauseHandler(audioData);
-    }
+    // }
   }, [lastPress, isLoading, isPlaying, playPauseHandler]);
 
   return (
