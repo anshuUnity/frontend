@@ -1,5 +1,3 @@
-Here's a **fancy README** for your podcast app, incorporating the screenshots for visual references. Great work on the app! It's really coming together beautifully.
-
 ---
 
 # 🎧 Podcast App
@@ -19,19 +17,25 @@ Welcome to the Podcast App! Discover, explore, and listen to your favorite podca
 ### Discover Screen
 The "Discover" tab showcases a list of trending podcasts. Users can scroll through a variety of episodes, view podcast durations, and start playing right away.
 
-![Discover Screenshot 1](/mnt/data/Simulator Screenshot - iPhone 15 Pro - 2024-09-30 at 11.46.29.png)
-![Discover Screenshot 2](/mnt/data/Simulator Screenshot - iPhone 15 Pro - 2024-09-30 at 11.46.41.png)
+<div style="display: flex">
+    <img src="assets/screenshots/discover-1.png" alt="Discover Screenshot 1" width="300"/>
+    <img src="assets/screenshots/discover-2.png" alt="Discover Screenshot 2" width="300"/>
+</div>
 
 ### Explore Screen
 In the "Explore" tab, users can search for podcasts by keywords. Results are displayed in a clean grid format with eye-catching album art.
 
-![Explore Screenshot](/mnt/data/Simulator Screenshot - iPhone 15 Pro - 2024-09-30 at 11.52.42.png)
-![Explore Results Screenshot](/mnt/data/Simulator Screenshot - iPhone 15 Pro - 2024-09-30 at 11.52.55.png)
+<div style="display: flex">
+    <img src="assets/screenshots/explore.png" alt="Explore 1" width="300"/>
+    <img src="assets/screenshots/explore-result.png" alt="Explore 2" width="300"/>
+</div>
 
 ### Podcast Detail Screen
 The podcast detail page allows users to see the description of the podcast episode, add episodes to their playlist, and download them for offline listening. Users can also rate podcasts and view other metadata.
 
-![Podcast Detail Screenshot](/mnt/data/Simulator Screenshot - iPhone 15 Pro - 2024-09-30 at 11.53.12.png)
+<div style="display: flex">
+    <img src="assets/screenshots/podcast-detail.png" alt="Discover Screenshot 1" width="300"/>
+</div>
 
 ## 🎯 How to Use
 
@@ -47,11 +51,11 @@ To get started with the app:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/podcast-app.git
+   git clone https://github.com/anshuunity/frontend.git
    ```
 2. Install the dependencies:
    ```bash
-   cd podcast-app
+   cd frontend
    npm install
    ```
 3. Run the app:
